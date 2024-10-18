@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1,
+        "nombre": "TechCorp",
+        "direccion": "1234 Elm St, Ciudad",
+        "contacto": "+123456789",
+        "pathImgPerfil": "/images/fabricantes/techcorp.jpg"
+    },
+    {
+        "id": 2,
+        "nombre": "CapsulaCorp",
+        "direccion": "123 Calle Falsa, Ciudad",
+        "contacto": "+987654321",
+        "pathImgPerfil": "/images/fabricantes/capsulacorp.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "MadeInChina",
+        "direccion": "321 Ontoy, Ciudad",
+        "contacto": "+978654321",
+        "pathImgPerfil": "/images/fabricantes/madeinchina.jpg"
+    }
+
+
+
+
+
+
+
+
+
+
+]
