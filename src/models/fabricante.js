@@ -10,7 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Fabricante.hasMany(models.Producto,{
+        foreignKey: 'fabricanteId',
+        as: 'manufacturer'
+      })
+      Fabricante.belongsToMany(models.Producto, { through: 'ProductoFabricante' });
     }
   }
   Fabricante.init({
@@ -20,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     pathImgPerfil: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Fabricante',
+    modelName: 'Fabricantes',
+    tableName: 'Fabricantes' ,
+    timestamps: false
   });
   return Fabricante;
 };
