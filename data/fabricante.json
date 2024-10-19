@@ -19,6 +19,13 @@
         "direccion": "321 Ontoy, Ciudad",
         "contacto": "+978654321",
         "pathImgPerfil": "/images/fabricantes/madeinchina.jpg"
+    }, 
+    {
+        "id": 4,
+        "nombre": "Innovatech",
+        "direccion": "4567 Oak Ave, Ciudad",
+        "contacto": "+987654321",
+        "pathImgPerfil": "/images/fabricantes/innovatech.jpg"
     }
 
 

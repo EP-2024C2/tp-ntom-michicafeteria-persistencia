@@ -14,8 +14,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey:'productosId' ,
         as:'products'
       })
-      Producto.belongsToMany(models.Fabricante, { through: 'ProductoFabricante' });
-      Producto.belongsToMany(models.Componente, { through: 'ProductoComponente' })
+      Producto.belongsToMany(models.Fabricante, { 
+        through: 'ProductoFabricante',
+        foreignKey: 'productoId',
+        otherKey: 'fabricanteId' });
+
+      Producto.belongsToMany(models.Componente, { 
+        through: 'ProductoComponente',
+        foreignKey: 'productoId',
+        otherKey: 'componenteId',
+        as: 'manyComponents' })
     }
   }
   Producto.init({

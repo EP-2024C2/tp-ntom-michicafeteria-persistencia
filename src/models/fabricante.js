@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'fabricanteId',
         as: 'manufacturer'
       })
-      Fabricante.belongsToMany(models.Producto, { through: 'ProductoFabricante' });
+      Fabricante.belongsToMany(models.Producto, { 
+        through: 'ProductoFabricante',
+        foreignKey: 'fabricanteId',
+        otherKey: 'productoId',
+        as: 'manyProducts' });
     }
   }
   Fabricante.init({
