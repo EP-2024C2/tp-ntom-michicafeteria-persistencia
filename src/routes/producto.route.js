@@ -1,15 +1,61 @@
-const express = require('express');
-const router = express.Router();
-const productoController = require('../controllers/producto.controller');
+const { Router } = require('express');
+const productoController = require('../controllers/producto.controller')
+const productoMiddleware = require('../middlewares/producto.middleware')
+const productoSchema = require('../schemas/producto.schema')
 
-router.get('/', productoController.getAllProductos);
-router.get('/:id', productoController.getProductoById);
-router.post('/', productoController.createProducto);
-router.put('/:id', productoController.updateProducto);
-router.delete('/:id', productoController.deleteProducto);
-router.post('/:id/fabricantes', productoController.createFabricanteAsociacion);
-router.get('/:id/fabricantes', productoController.getFabricantesDeProducto);
-router.post('/:id/componentes', productoController.createComponenteAsociacion);
-router.get('/:id/componentes', productoController.getComponentesDeProducto);
+const schemaValidator = require('../middlewares/schemaValidator.middleware');
+
+const fabricanteController = require('../controllers/fabricante.controller');
+const fabricanteSchema = require('../schemas/fabricante.schema')
+
+const componenteController = require('../controllers/componente.controller');
+
+const router = Router();
+
+router.get('/producto', 
+    productoController.getAllProductos
+);
+
+router.get('/producto/:id', 
+    productoMiddleware.validateIdProducto,
+    productoController.getProductoById
+);
+
+router.post('/producto',
+    schemaValidator(productoSchema),
+    productoController.createProducto
+);
+
+router.put('/producto/:id',
+    productoMiddleware.validateIdProducto, 
+    productoController.updateProducto
+);
+
+router.delete('/producto/:id', 
+    productoMiddleware.validateIdProducto,
+    productoController.deleteProducto
+);
+
+router.post('/producto/:id/fabricantes',
+    productoMiddleware.validateIdProducto,
+    schemaValidator(fabricanteSchema),
+    fabricanteController.createFabricanteAsociacion
+);
+
+router.get('/producto/:id/fabricantes', 
+    productoMiddleware.validateIdProducto,
+    fabricanteController.getFabricantesDeProducto
+);
+
+router.post('/producto/:id/componentes',
+    productoMiddleware.validateIdProducto,
+    schemaValidator(productoSchema),
+    componenteController.createComponenteAsociacion
+);
+
+router.get('/producto/:id/componentes',
+    productoMiddleware.validateIdProducto,
+    componenteController.getComponentesDeProducto
+);
 
 module.exports = router;

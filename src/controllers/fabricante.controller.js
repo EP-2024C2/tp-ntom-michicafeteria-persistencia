@@ -1,88 +1,112 @@
 const { Fabricante, Producto } = require('../models');
+const controller = {}
 
-// Obtener todos los fabricantes
-exports.getAllFabricantes = async (req, res) => {
-  try {
-    const fabricantes = await Fabricante.findAll();
-    res.status(200).json(fabricantes);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener fabricantes', error });
-  }
+// Obtener todos los fabricantes (200)
+const getAllFabricantes = async (req, res) => {
+  const fabricantes = await Fabricante.findAll();
+  res.status(200).json(fabricantes);
 };
 
-// Obtener un fabricante por ID
-exports.getFabricanteById = async (req, res) => {
+// Obtener un fabricante por ID (200,404)
+const getFabricanteById = async (req, res) => {
+  const  id  = req.params;
+  const fabricante = await Fabricante.findByPk(id);
+  if (fabricante) 
+    res.status(200).json(fabricante);
+};
+
+// Crear un nuevo fabricante (201,400)
+const createFabricante = async (req, res) => {
+  const {nombre, direccion , contacto , pathImgPerfil} = req.body; //{nombre, direccion,contacto , pathImgPerfil}
+  const fabricante = await Fabricante.create({
+    nombre,
+    direccion,
+    contacto,
+    pathImgPerfil
+  });
+  res.status(201).json(fabricante);
+};
+
+// Modificar un fabricante existente (200,404)
+const updateFabricante = async (req, res) => {
   const { id } = req.params;
-  try {
-    const fabricante = await Fabricante.findByPk(id);
-    if (fabricante) {
-      res.status(200).json(fabricante);
-    } else {
-      res.status(404).json({ message: 'Fabricante no encontrado' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener el fabricante', error });
-  }
-};
-
-// Crear un nuevo fabricante
-exports.createFabricante = async (req, res) => {
-  try {
-    const nuevoFabricante = await Fabricante.create(req.body);
-    res.status(201).json(nuevoFabricante);
-  } catch (error) {
-    res.status(400).json({ message: 'Error al crear el fabricante', error });
-  }
-};
-
-// Modificar un fabricante existente
-exports.updateFabricante = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const [updated] = await Fabricante.update(req.body, {
-      where: { id }
-    });
+    const [updated] = await Fabricante.update(req.body, { where: { id } });
     if (updated) {
       const updatedFabricante = await Fabricante.findByPk(id);
       res.status(200).json(updatedFabricante);
-    } else {
-      res.status(404).json({ message: 'Fabricante no encontrado' });
     }
-  } catch (error) {
-    res.status(400).json({ message: 'Error al actualizar el fabricante', error });
-  }
 };
 
-// Borrar un fabricante
-exports.deleteFabricante = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const deleted = await Fabricante.destroy({
-      where: { id }
-    });
-    if (deleted) {
-      res.status(200).json({ message: 'Fabricante eliminado' });
-    } else {
-      res.status(404).json({ message: 'Fabricante no encontrado' });
-    }
-  } catch (error) {
+// Borrar un fabricante (200,404,500)
+const deleteFabricante = async (req, res) => {
+  const idFabricante = req.params.id;
+  const deleted = await Fabricante.destroy({where: {id:idFabricante}})
+  if (deleted) {
+    res.status(200).json({ message: 'Fabricante eliminado' });
+  } else {
     res.status(500).json({ message: 'Error al eliminar el fabricante', error });
   }
 };
 
-// Obtener todos los productos de un fabricante
-exports.getProductosDeFabricante = async (req, res) => {
+// Obtener todos los productos de un fabricante (200,404)
+const getProductosDeFabricante = async (req, res) => {
   const { id } = req.params;
   try {
     const fabricante = await Fabricante.findByPk(id, {
       include: [{ model: Producto, as: 'manyProducts' }]
-    });
-    if (fabricante) {
+    })
+    if (fabricante) 
       res.status(200).json(fabricante.manyProducts);
-    } else {
-      res.status(404).json({ message: 'Fabricante no encontrado' });
-    }
+    
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los productos del fabricante', error });
+  }'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Producto extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      Producto.hasMany(models.Componente,{
+        foreignKey:'productosId' ,
+        as:'products'
+      })
+      Producto.belongsToMany(models.Fabricante, { 
+        through: 'ProductoFabricante',
+        foreignKey: 'productoId',
+        otherKey: 'fabricanteId' });
+
+      Producto.belongsToMany(models.Componente, { 
+        through: 'ProductoComponente',
+        foreignKey: 'productoId',
+        otherKey: 'componenteId',
+        as: 'manyComponents' })
+    }
   }
+  Producto.init({
+    nombre: DataTypes.STRING,
+    descripcion: DataTypes.STRING,
+    precio: DataTypes.FLOAT,
+    pathImg: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'Producto',
+    tableName: 'Productos'
+  });
+  return Producto;
 };
+};
+
+controller.getAllFabricantes = getAllFabricantes;
+controller.getFabricanteById = getFabricanteById;
+controller.createFabricante = createFabricante;
+controller.updateFabricante = updateFabricante;
+controller.deleteFabricante = deleteFabricante;
+controller.getProductosDeFabricante = getProductosDeFabricante;
+
+module.exports = controller;

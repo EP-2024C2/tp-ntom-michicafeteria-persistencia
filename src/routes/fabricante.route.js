@@ -1,14 +1,42 @@
 const { Router } = require('express');
+
 const fabricanteController = require('../controllers/fabricante.controller');
-const {fabricanteMiddleware} = require('../middlewares/fabricante.middlewares')
+const {fabricanteMiddleware} = require('../middlewares')
+const fabricanteSchema = require('../schemas/fabricante.schema')
 
-const route = Router();
+const schemaValidator = require('../middlewares/schemaValidator.middleware')
 
-route.get('/', fabricanteController.getAllFabricantes);
-route.get('/:id', fabricanteController.getFabricanteById);
-route.post('/', fabricanteController.createFabricante);
-route.put('/:id', fabricanteController.updateFabricante);
-route.delete('/:id', fabricanteController.deleteFabricante);
-route.get('/:id/productos', fabricanteController.getProductosDeFabricante);
+const productoController = require('../controllers/producto.controller');
 
-module.exports = route;
+const router = Router();
+
+router.get('/fabricante', 
+    fabricanteController.getAllFabricantes
+);
+
+router.get('/fabricante/:id',
+    fabricanteMiddleware.validateIdFabricante, 
+    fabricanteController.getFabricanteById
+);
+
+router.post('/fabricante', 
+    schemaValidator(fabricanteSchema),
+    fabricanteController.createFabricante
+);
+
+router.put('/fabricante/:id',
+    fabricanteMiddleware.validateIdFabricante, 
+    fabricanteController.updateFabricante
+);
+
+router.delete('/fabricante/:id', 
+    fabricanteMiddleware.validateIdFabricante,
+    fabricanteController.deleteFabricante
+);
+
+router.get('/fabricante/:id/productos',
+    fabricanteMiddleware.validateIdFabricante, 
+    productoController.getFabricantesDeProducto
+);
+
+module.exports = router;
