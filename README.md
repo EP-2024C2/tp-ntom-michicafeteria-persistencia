@@ -1,6 +1,3 @@
-Aquí tienes un ejemplo de README para el proyecto **"tp-ntom-michicafeteria-persistencia"** basado en la información proporcionada:
-
----
 
 # tp-ntom-michicafeteria-persistencia
 
