@@ -3,8 +3,8 @@
     "username": "root",
     "password": null,
     "database": "entityStore",
-    "host": "data.postgres",
-    "dialect": "postgres"
+    "host": "localhost",
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",

@@ -4,9 +4,7 @@ const componenteController = require('../controllers/componente.controller');
 const {componenteMiddleware} = require('../middlewares');
 const componenteSchema = require('../schemas/componente.schema');
 
-const schemaValidator = require('../middlewares/schemaValidator.middleware');
-
-const productoController = require('../controllers/producto.controller');
+const schemaValidator = require('../schemas/schemaValidator');
 
 const router = Router();
 
@@ -35,7 +33,7 @@ router.delete('/componente/:id',
 
 router.get('/componente/:id/productos', 
     componenteMiddleware.validateIdComponente, 
-    productoController.getProductosDeComponente
+    componenteController.getProductosDeComponente
 );
 
 module.exports = router;

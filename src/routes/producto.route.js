@@ -3,7 +3,7 @@ const productoController = require('../controllers/producto.controller')
 const productoMiddleware = require('../middlewares/producto.middleware')
 const productoSchema = require('../schemas/producto.schema')
 
-const schemaValidator = require('../middlewares/schemaValidator.middleware');
+const schemaValidator = require('../schemas/schemaValidator');
 
 const fabricanteController = require('../controllers/fabricante.controller');
 const fabricanteSchema = require('../schemas/fabricante.schema')

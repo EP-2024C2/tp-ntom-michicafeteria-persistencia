@@ -2,8 +2,7 @@ const { Router } = require('express');
 const fabricanteController = require('../controllers/fabricante.controller');
 const {fabricanteMiddleware} = require('../middlewares')
 const fabricanteSchema = require('../schemas/fabricante.schema')
-const schemaValidator = require('../middlewares/schemaValidator.middleware')
-const productoController = require('../controllers/producto.controller');
+const schemaValidator = require('../schemas/schemaValidator')
 
 const router = Router();
 
@@ -33,7 +32,7 @@ router.delete('/fabricante/:id',
 
 router.get('/fabricante/:id/productos',
     fabricanteMiddleware.validateIdFabricante, 
-    productoController.getFabricantesDeProducto
+    fabricanteController.getFabricantesDeProducto
 );
 
 module.exports = router;

@@ -5,6 +5,7 @@ const controller = {}
 // Obtener todos los fabricantes (200)
 const getAllFabricantes = async (req, res) => {
   const fabricantes = await Fabricante.findAll();
+  console.log(fabricantes);
   res.status(200).json(fabricantes);
 };
 

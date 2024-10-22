@@ -6,9 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       
       Fabricante.belongsToMany(models.Producto, { 
         through: 'ProductoFabricante',
-        foreignKey: 'fabricanteId',
-        otherKey: 'productoId',
-        as: 'manyProducts' 
       });
     }
   }
@@ -21,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Fabricante',
+    tableName: 'Fabricantes',
+    timestamps: false
   });
 
   return Fabricante;

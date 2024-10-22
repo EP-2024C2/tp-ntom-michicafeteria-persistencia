@@ -5,18 +5,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       
       Producto.belongsToMany(models.Componente, {
-        through: 'ProductoComponente', 
-        foreignKey: 'productoId',
-        otherKey: 'componenteId',
-        as: 'manyComponents', 
+        through: 'ProductoComponente'
       });
 
       
       Producto.belongsToMany(models.Fabricante, {
-        through: 'ProductoFabricante', 
-        foreignKey: 'productoId',
-        otherKey: 'fabricanteId',
-        as: 'manyManufacturers' 
+        through: 'ProductoFabricante'
       });
     }
   }
@@ -29,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Producto',
+    tableName: 'Productos',
+    timestamps: false
   });
 
   return Producto;

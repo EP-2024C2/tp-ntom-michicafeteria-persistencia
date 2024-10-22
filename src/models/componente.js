@@ -5,10 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       
       Componente.belongsToMany(models.Producto, {
-        through: 'ProductoComponente',
-        foreignKey: 'componenteId',
-        otherKey: 'productoId',
-        as: 'manyProducts', 
+        through: 'ProductoComponente'
       });
     }
   }
@@ -19,6 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Componente',
+    tableName: 'Componentes',
+    timestamps: false
   });
 
   return Componente;
