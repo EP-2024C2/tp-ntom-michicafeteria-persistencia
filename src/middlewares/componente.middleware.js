@@ -10,6 +10,5 @@ const validateIdComponente = async (req, res, next)=>{
 }
 middleware.validateIdComponente = validateIdComponente
 
-
 module.exports = middleware
 

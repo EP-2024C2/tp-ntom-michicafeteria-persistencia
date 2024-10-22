@@ -1,11 +1,8 @@
 const { Router } = require('express');
-
 const fabricanteController = require('../controllers/fabricante.controller');
 const {fabricanteMiddleware} = require('../middlewares')
 const fabricanteSchema = require('../schemas/fabricante.schema')
-
 const schemaValidator = require('../middlewares/schemaValidator.middleware')
-
 const productoController = require('../controllers/producto.controller');
 
 const router = Router();

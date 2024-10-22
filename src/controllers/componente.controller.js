@@ -9,39 +9,41 @@ const getAllComponentes = async (req, res) => {
 
 // Obtener un componente por ID (200,404)
 const getComponenteById = async (req, res) => {
-  const { id } = req.params;
-  const componente = await Componente.findByPk(id);
-  if (componente)
-    res.status(200).json(componente);
+  const { id } = req.params.id;
+  const componente = await Componente.findByPk(id)
+  res.status(200).json(componente);
 };
 
 // Crear un nuevo componente (201,400)
 const createComponente = async (req, res) => {
-  const nuevoComponente = await Componente.create(req.body);
+  const {nombre,descripcion} = req.body
+  const nuevoComponente = await Componente.create(
+    nombre,
+    descripcion
+  );
   res.status(201).json(nuevoComponente);
 };
 
 // Modificar un componente existente (200,404)
 const updateComponente = async (req, res) => {
-  const { id } = req.params;
-  const [updated] = await Componente.update(req.body, {
-    where: { id }
-  });
-  if (updated) {
-    const updatedComponente = await Componente.findByPk(id);
-    res.status(200).json(updatedComponente);
-  }
+  const { nombre, descripcion } = req.body;
+  const id = req.params.id;
+  const componente = await Componente.findByPk(id)
+  componente.nombre = nombre;
+  componente.descripcion = descripcion;
+  await Componente.save()
+  res.status(200).json(componente);
+  
 };
 
 // Borrar un componente (200,404,500)
 const deleteComponente = async (req, res) => {
-  const { id } = req.params;
+  const idComponente = req.params.id;
+
   try {
-    const deleted = await Componente.destroy({
-      where: { id }
-    });
-    if (deleted) 
-      res.status(200).json({ message: 'Componente eliminado' });
+    const deleted = await Componente.destroy({where: {id:idComponente}});
+
+    res.status(200).json({ message: `Componente ${deleted} eliminado` });
     
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar el componente', error });
@@ -50,13 +52,11 @@ const deleteComponente = async (req, res) => {
 
 // Obtener todos los productos de un componente (200,404)
 const getProductosDeComponente = async (req, res) => {
-  const { id } = req.params;
-  const componente = await Componente.findByPk(id, {
+  const idComponente = req.params.id;
+  const productos = await Producto.findByPk( {where: {idComponente},
     include: [{ model: Producto, as: 'productos' }]
   });
-  if (componente) 
-    res.status(200).json(componente.productos);
-  
+  res.status(200).json(productos);
   
 };
 

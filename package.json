@@ -4,7 +4,6 @@
   "description": "Trabajo Practico M to N - -Grupo xxxxxxxxx",
   "main": "index.js",
   "scripts": {
-    "repl": "nodemon test.js",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,6 +22,8 @@
   "dependencies": {
     "express": "^4.21.1",
     "joi": "^17.13.3",
+    "mysql2": "^3.11.3",
+    "mysql3": "^0.6.0",
     "pg": "^8.13.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.4",
